@@ -1,4 +1,5 @@
 function getComputerChoice() {
+    // Randomly return "Rock", "Paper" or "Scissors"
     let randomNum = Math.floor(Math.random() * 3)
     if (randomNum === 0) {
         return "Rock";
@@ -23,31 +24,33 @@ function playRound(playerSelection, computerSelection) {
     // Check and output winner
     if (
         (player == "Rock" && computer == "Scissors") ||
-        (player == "Scissors" && computer == "Paper") ||
-        (player == "Paper" && computer == "Rock")
+        (player == "Paper" && computer == "Rock") ||
+        (player == "Scissors" && computer == "Paper")
     ) {
         return `You Win! ${player} beats ${computer}`;
     } else if (
         (player == "Rock" && computer == "Rock") ||
-        (player == "Scissors" && computer == "Scissors") ||
-        (player == "Paper" && computer == "Paper")
+        (player == "Paper" && computer == "Paper") ||
+        (player == "Scissors" && computer == "Scissors")
     ) {
         return "It's a draw!";
     } else {
         return `You Loose! ${player} looses against ${computer}`;
     }
-
 }
 
 
 function playGame() {
+    // Play five rounds of the game
     let playerSelection;
     let computerSelection;
     for (let i = 0; i < 5; i++) {
-        playerSelection = prompt("Enter: Rock, Scissors or Paper");
+        // Ask user to enter selection and then output the winner
+        playerSelection = prompt("Enter: Rock, Paper or Scissors");
         computerSelection = getComputerChoice();
         console.log(playRound(playerSelection, computerSelection));
     }
 }
+
 
 playGame();
