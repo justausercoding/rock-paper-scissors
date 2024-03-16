@@ -18,6 +18,7 @@ function getComputerChoice() {
  */
 function playRound(playerSelection, computerSelection) {
     // Convert user input to format "Xxxxx"
+    console.log(`function was called: ${playerSelection}`)
     let player = playerSelection.toUpperCase().charAt(0) + playerSelection.toLowerCase().slice(1);
     let computer = computerSelection;
 
@@ -27,30 +28,86 @@ function playRound(playerSelection, computerSelection) {
         (player == "Paper" && computer == "Rock") ||
         (player == "Scissors" && computer == "Paper")
     ) {
-        return `You Win! ${player} beats ${computer}`;
+        return {
+            message : `You Win! ${player} beats ${computer}`,
+            winner : "player"
+        };
     } else if (
         (player == "Rock" && computer == "Rock") ||
         (player == "Paper" && computer == "Paper") ||
         (player == "Scissors" && computer == "Scissors")
     ) {
-        return "It's a draw!";
+        return {
+            message : "It's a draw",
+            winner: "draw"
+        }
     } else {
-        return `You Loose! ${player} looses against ${computer}`;
+        return {
+            message : `You Loose! ${player} looses against ${computer}`,
+            winner: "computer"
+        };
     }
 }
 
 
-function playGame() {
-    // Play five rounds of the game
-    let playerSelection;
-    let computerSelection;
-    for (let i = 0; i < 5; i++) {
-        // Ask user to enter selection and then output the winner
-        playerSelection = prompt("Enter: Rock, Paper or Scissors");
-        computerSelection = getComputerChoice();
-        console.log(playRound(playerSelection, computerSelection));
+/**
+ * 
+ * @param {String} playerSelection 
+ */
+function playGame(playerSelection) {
+    // The main function of the game
+    if (counterRounds <= 4) {
+        // Allows 5 rounds of the game
+        let computerSelection = getComputerChoice();
+        resultOneRound = playRound(playerSelection, computerSelection);
+
+        counterRounds++;
+        result.textContent = resultOneRound.message;
+        rounds.textContent = `Round ${counterRounds}`;
+
+        if (resultOneRound.winner == "player") {
+            winsPlayer++;
+        } else if (resultOneRound.winner == "computer") {
+            winsComputer++;
+        }
+
     }
+    if (counterRounds > 4) {
+        // After the 5 round, the winner will be displayed
+        if (winsPlayer > winsComputer) {
+            winner.textContent = "End Result: You win!";
+        } else if (winsPlayer == winsComputer) {
+            winner.textContent = "End Result: Draw";
+        } else {
+            winner.textContent = "End Result: You loose!";
+        }
+    }
+
 }
 
 
-playGame();
+const rock = document.querySelector(".rock");
+const paper = document.querySelector(".paper");
+const scissors = document.querySelector(".scissors");
+
+rock.addEventListener("click", () => {
+    playGame("rock");
+});
+
+paper.addEventListener("click", () => {
+    playGame("paper");
+});
+
+scissors.addEventListener("click", () => {
+    playGame("scissors");
+});
+
+
+const result = document.querySelector(".result");
+const rounds = document.querySelector(".rounds");
+const winner = document.querySelector(".winner");
+
+let resultOneRound;
+let counterRounds = 0;
+let winsPlayer = 0;
+let winsComputer = 0;
